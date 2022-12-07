@@ -59,9 +59,27 @@ namespace HeistPartII
             3. Lock Specialist");
 
                 specialtyChoice = Console.ReadLine();
+            }
 
+
+            int crewSkillLevel = 0;
+
+            while (crewSkillLevel < 1 || crewSkillLevel > 100)
+            {
+                Console.WriteLine($"Please enter {crewName}'s skill level (1-100):");
+
+                crewSkillLevel = int.Parse(Console.ReadLine());
 
             }
+
+            int crewCutPercentage = 0;
+            while (crewCutPercentage < 1 || crewCutPercentage > 100) ;
+            {
+                Console.WriteLine($"What is the percentage of {crewName}'s cut?");
+
+                crewCutPercentage = int.Parse(Console.ReadLine());
+            }
+
 
         }
 
