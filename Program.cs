@@ -21,7 +21,7 @@ namespace HeistPartII
             {
                 Console.WriteLine("Most Secure: Alarm");
             }
-            if (TargetBank.VaultScore > TargetBank.AlarmScore && TargetBank.VaultScore > TargetBank.SecurityGaurdScore)
+            else if (TargetBank.VaultScore > TargetBank.AlarmScore && TargetBank.VaultScore > TargetBank.SecurityGaurdScore)
             {
                 Console.WriteLine("Most Secure: Vault");
             }
@@ -34,7 +34,7 @@ namespace HeistPartII
             {
                 Console.WriteLine("Least Secure: Alarm");
             }
-            if (TargetBank.VaultScore < TargetBank.AlarmScore && TargetBank.VaultScore < TargetBank.SecurityGaurdScore)
+            else if (TargetBank.VaultScore < TargetBank.AlarmScore && TargetBank.VaultScore < TargetBank.SecurityGaurdScore)
             {
                 Console.WriteLine("Least Secure: Vault");
             }
@@ -49,32 +49,32 @@ namespace HeistPartII
            {
                 new Hacker() {
                     Name = "Ben",
-                    SkillLevel = 77,
+                    SkillLevel = 100,
                     PercentageCut = 22
 
                 },
 
                 new Muscle() {
                     Name = "JuJu",
-                    SkillLevel = 30,
+                    SkillLevel = 100,
                     PercentageCut = 10
                 },
 
                 new LockSpecialist() {
                     Name = "Karen",
-                    SkillLevel = 15,
+                    SkillLevel = 100,
                     PercentageCut = 4
                 },
 
                 new Muscle() {
                     Name = "Chad",
-                    SkillLevel = 83,
+                    SkillLevel = 100,
                     PercentageCut = 35
                 },
 
                 new LockSpecialist() {
                     Name = "Stimpy",
-                    SkillLevel = 70,
+                    SkillLevel = 100,
                     PercentageCut = 37
            }
         };
@@ -202,7 +202,27 @@ namespace HeistPartII
 
             }
 
+            foreach (IRobber robber in crew)
+            {
+                robber.PerformSkill(TargetBank);
+            }
 
+            Console.WriteLine(TargetBank.IsSecure ? "You failed to rob the bank.  You're screwed." : "You succesfully robbed the bank!  You're loaded!");
+
+            if (!TargetBank.IsSecure)
+            {
+                decimal totalTake = 0m;
+
+                foreach (IRobber robber in crew)
+                {
+                    decimal take = (robber.PercentageCut / 100m) * TargetBank.CashOnHand;
+                    Console.WriteLine($"{robber.Name} got ${take}");
+                    totalTake += take;
+                }
+                TargetBank.CashOnHand -= totalTake;
+                Console.WriteLine($"Your cut is ${TargetBank.CashOnHand}.");
+
+            }
         }
 
 

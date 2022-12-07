@@ -7,7 +7,7 @@ namespace HeistPartII
     {
 
         //An integer property for CashOnHand
-        public int CashOnHand { get; set; }
+        public decimal CashOnHand { get; set; }
 
         //An integer property for AlarmScore
         public int AlarmScore { get; set; }
