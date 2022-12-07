@@ -164,32 +164,41 @@ namespace HeistPartII
 
 
                 Console.WriteLine("Enter index of operative you would like to add to the heist: ");
-                int crewSelection = int.Parse(Console.ReadLine());
 
-                //the report should not include operatives that have already been added to the crew, or operatives that require a percentage cut that can't be offered.
-
-                int totalPercentageCut = 0;
-                foreach (IRobber theif in crew)
+                string operativeIndex = Console.ReadLine();
+                int crewSelection;
+                if (operativeIndex == "")
                 {
-                    totalPercentageCut += theif.PercentageCut;
+                    break;
                 }
-                try
+                else if (int.TryParse(operativeIndex, out crewSelection))
                 {
 
-                    if ((totalPercentageCut + rolodex[crewSelection].PercentageCut) <= 100)
+                    int totalPercentageCut = 0;
+                    foreach (IRobber theif in crew)
                     {
-                        crew.Add(rolodex[crewSelection]);
-                        rolodex.Remove(rolodex[crewSelection]);
+                        totalPercentageCut += theif.PercentageCut;
                     }
-                    else
+                    try
                     {
-                        Console.WriteLine($"{rolodex[crewSelection].Name} percentage cut is to high");
+
+                        if ((totalPercentageCut + rolodex[crewSelection].PercentageCut) <= 100)
+                        {
+                            crew.Add(rolodex[crewSelection]);
+                            rolodex.Remove(rolodex[crewSelection]);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{rolodex[crewSelection].Name} percentage cut is to high");
+                        }
                     }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        Console.WriteLine("Must be one of the listed opptions");
+                    }
+
                 }
-                catch (ArgumentOutOfRangeException)
-                {
-                    Console.WriteLine("Must be one of the listed opptions");
-                }
+
 
             }
 
