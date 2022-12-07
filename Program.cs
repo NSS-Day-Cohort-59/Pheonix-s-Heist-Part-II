@@ -9,7 +9,7 @@ namespace HeistPartII
         {
 
 
-            
+
             Bank TargetBank = new Bank()
             {
                 CashOnHand = new Random().Next(50000, 1000000),
@@ -17,27 +17,33 @@ namespace HeistPartII
                 VaultScore = new Random().Next(100),
                 SecurityGaurdScore = new Random().Next(100),
             };
-            if(TargetBank.AlarmScore > TargetBank.VaultScore && TargetBank.AlarmScore > TargetBank.SecurityGaurdScore) {
+            if (TargetBank.AlarmScore > TargetBank.VaultScore && TargetBank.AlarmScore > TargetBank.SecurityGaurdScore)
+            {
                 Console.WriteLine("Most Secure: Alarm");
             }
-            if(TargetBank.VaultScore > TargetBank.AlarmScore && TargetBank.VaultScore > TargetBank.SecurityGaurdScore) {
+            if (TargetBank.VaultScore > TargetBank.AlarmScore && TargetBank.VaultScore > TargetBank.SecurityGaurdScore)
+            {
                 Console.WriteLine("Most Secure: Vault");
             }
-            else {
+            else
+            {
                 Console.WriteLine("Most Secure: Security Guards");
             }
 
-            if(TargetBank.AlarmScore < TargetBank.VaultScore && TargetBank.AlarmScore < TargetBank.SecurityGaurdScore) {
+            if (TargetBank.AlarmScore < TargetBank.VaultScore && TargetBank.AlarmScore < TargetBank.SecurityGaurdScore)
+            {
                 Console.WriteLine("Least Secure: Alarm");
             }
-            if(TargetBank.VaultScore < TargetBank.AlarmScore && TargetBank.VaultScore < TargetBank.SecurityGaurdScore) {
+            if (TargetBank.VaultScore < TargetBank.AlarmScore && TargetBank.VaultScore < TargetBank.SecurityGaurdScore)
+            {
                 Console.WriteLine("Least Secure: Vault");
             }
-            else {
+            else
+            {
                 Console.WriteLine("Least Secure: Security Guards");
             }
 
-            
+
 
             List<IRobber> rolodex = new List<IRobber>()
            {
@@ -74,15 +80,17 @@ namespace HeistPartII
         };
 
             Console.WriteLine($"You have {rolodex.Count} operatives.");
-            
-            while(true) {
+
+            while (true)
+            {
                 Console.WriteLine($"Enter the name of your new crew member.");
 
-                
+
 
                 string crewName = Console.ReadLine();
 
-                if(crewName == "") {
+                if (crewName == "")
+                {
                     break;
                 }
 
@@ -118,16 +126,19 @@ namespace HeistPartII
                     crewCutPercentage = int.Parse(Console.ReadLine());
                 }
                 IRobber larry;
-                
-                if(specialtyChoice == "1") {
+
+                if (specialtyChoice == "1")
+                {
                     larry = new Muscle();
-                    
+
                 }
-                else if(specialtyChoice == "2") {
+                else if (specialtyChoice == "2")
+                {
                     larry = new Hacker();
-                    
+
                 }
-                else {
+                else
+                {
                     larry = new LockSpecialist();
                 }
                 larry.Name = crewName;
@@ -140,20 +151,46 @@ namespace HeistPartII
 
 
 
-            while(true) {
+            List<IRobber> crew = new List<IRobber>();
+
+            while (true)
+            {
                 Console.WriteLine("Rolodex: ");
 
-                for(int i = 0; i < rolodex.Count; i++) {
+                for (int i = 0; i < rolodex.Count; i++)
+                {
                     Console.WriteLine(i + ". " + rolodex[i].Name + " " + rolodex[i].GetType().Name + " Skill Level: " + rolodex[i].SkillLevel + " Percent Cut: " + rolodex[i].PercentageCut);
                 }
 
-                List<IRobber> crew = new List<IRobber>();
 
                 Console.WriteLine("Enter index of operative you would like to add to the heist: ");
                 int crewSelection = int.Parse(Console.ReadLine());
-                crew.Add(rolodex[crewSelection]);
 
-                rolodex.Remove(rolodex[crewSelection]);
+                //the report should not include operatives that have already been added to the crew, or operatives that require a percentage cut that can't be offered.
+
+                int totalPercentageCut = 0;
+                foreach (IRobber theif in crew)
+                {
+                    totalPercentageCut += theif.PercentageCut;
+                }
+                try
+                {
+
+                    if ((totalPercentageCut + rolodex[crewSelection].PercentageCut) <= 100)
+                    {
+                        crew.Add(rolodex[crewSelection]);
+                        rolodex.Remove(rolodex[crewSelection]);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{rolodex[crewSelection].Name} percentage cut is to high");
+                    }
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    Console.WriteLine("Must be one of the listed opptions");
+                }
+
             }
 
 
